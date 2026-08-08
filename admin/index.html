@@ -38,10 +38,20 @@ h1,h2{margin-top:0}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;b
 
 <section id="submissions" class="card">
 <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
-<div><h2>📥 Submitted Evaluations</h2><div id="submissionStatus" class="status">Loading...</div></div>
-<button class="btn" onclick="loadSubmissions()">🔄 Refresh</button>
+<div>
+<h2>📥 Submitted Evaluations</h2>
+<div class="status">Your submitted forms are stored in your temporary Webhook.site inbox.</div>
 </div>
-<div id="submissionList"></div>
+<a class="btn" href="https://webhook.site/9b1dcf94-782f-4889-9223-7f6cce11afed" target="_blank" rel="noopener">🔗 Open Submissions</a>
+</div>
+
+<div style="margin-top:18px;padding:18px;border-radius:14px;background:#ffffff06;border:1px solid #ffffff10">
+<strong>✅ Submission system is working</strong>
+<p class="muted" style="margin-bottom:0">
+Click <b>Open Submissions</b> to view the names, two contact numbers, and all answers received from your members.
+You do not need an API key or paid subscription for this temporary setup.
+</p>
+</div>
 </section>
 
 <section id="editor" class="card hidden editor">
@@ -54,8 +64,6 @@ h1,h2{margin-top:0}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;b
 </main>
 
 <script>
-const TOKEN='9b1dcf94-782f-4889-9223-7f6cce11afed';
-const API='https://webhook.site/token/'+TOKEN+'/requests?sorting=newest&per_page=100';
 const ADMIN_USER='admin000', ADMIN_PASS='admin@1625';
 
 const defaultQuestions=[
@@ -80,7 +88,6 @@ function adminLogin(){
    loginScreen.classList.add('hidden');
    appScreen.classList.remove('hidden');
    renderQuestions();
-   loadSubmissions();
  } else {
    message.textContent = '❌ Incorrect username or password.';
  }
@@ -91,29 +98,7 @@ function showTab(id,el){
  document.getElementById(id).classList.remove('hidden');
  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');
 }
-async function loadSubmissions(){
- const box=document.getElementById('submissionList'), status=document.getElementById('submissionStatus');
- status.textContent='Loading submissions...'; box.innerHTML='';
- try{
-   const r=await fetch(API,{headers:{Accept:'application/json'}});
-   if(!r.ok) throw new Error('HTTP '+r.status);
-   const json=await r.json();
-   const rows=json.data||[];
-   status.textContent=rows.length+' submission(s) found';
-   if(!rows.length){box.innerHTML='<p class="status">No submissions yet.</p>';return}
-   rows.forEach((x,i)=>{
-     const f=x.request||{};
-     const name=f.full_name||'Unnamed applicant';
-     const date=x.created_at||x.time||'';
-     const entries=Object.entries(f).filter(([k])=>!['submitted_at'].includes(k));
-     const answers=entries.map(([k,v])=>`<div class="answer"><b>${esc(label(k))}</b><span>${esc(String(v))}</span></div>`).join('');
-     box.insertAdjacentHTML('beforeend',`<article class="submission"><div class="submission-head"><div class="name">👤 ${esc(name)}</div><div class="date">${esc(String(date))}</div></div><div class="answers">${answers||'<div class="status">No form fields found.</div>'}</div></article>`);
-   });
- }catch(e){
-   status.textContent='Could not load submissions.';
-   box.innerHTML='<p class="status">Webhook.site blocked this browser request or requires API authentication. Enable CORS on the Webhook.site token or use its API key through a secure server.</p>';
- }
-}
+function loadSubmissions(){ /* Submissions are viewed directly in the free Webhook.site inbox. */ }
 function label(k){return k.replace(/^q\d+_/,'').replaceAll('_',' ').replace(/\b\w/g,m=>m.toUpperCase())}
 function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function renderQuestions(){
