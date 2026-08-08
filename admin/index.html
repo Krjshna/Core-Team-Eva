@@ -26,7 +26,7 @@ h1,h2{margin-top:0}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;b
 <p class="muted">Manage evaluation submissions and question settings.</p>
 <div class="field"><label>Username</label><input id="user" autocomplete="username"></div>
 <div class="field"><label>Password</label><input id="pass" type="password" autocomplete="current-password"></div>
-<button class="btn" style="width:100%" onclick="login()">🚀 Access Admin</button>
+<button class="btn" style="width:100%" type="button" onclick="adminLogin()">🚀 Access Admin</button>
 <p id="loginMsg" class="status"></p>
 </section>
 
@@ -68,10 +68,22 @@ const defaultQuestions=[
 ['q10_final_alignment','10. Final Alignment']
 ];
 
-function login(){
- if(user.value===ADMIN_USER && pass.value===ADMIN_PASS){
-   login.classList.add('hidden'); app.classList.remove('hidden'); loadSubmissions(); renderQuestions();
- } else loginMsg.textContent='❌ Incorrect username or password.';
+function adminLogin(){
+ const username = document.getElementById('user').value.trim();
+ const password = document.getElementById('pass').value;
+ const loginScreen = document.getElementById('login');
+ const appScreen = document.getElementById('app');
+ const message = document.getElementById('loginMsg');
+
+ if(username === ADMIN_USER && password === ADMIN_PASS){
+   message.textContent = '';
+   loginScreen.classList.add('hidden');
+   appScreen.classList.remove('hidden');
+   renderQuestions();
+   loadSubmissions();
+ } else {
+   message.textContent = '❌ Incorrect username or password.';
+ }
 }
 function logout(){location.reload()}
 function showTab(id,el){
