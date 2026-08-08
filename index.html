@@ -529,10 +529,28 @@
 
         <form id="evaluationForm" action="https://webhook.site/9b1dcf94-782f-4889-9223-7f6cce11afed" method="POST">
             
+
+            <!-- APPLICANT DETAILS -->
+            <div class="question-group applicant-details">
+                <label class="question-title">👤 Before you begin, tell us who you are</label>
+                <p style="color:#9ca3af;font-size:13px;margin:-4px 0 16px;">
+                    Please enter your full name and two contact numbers so management can identify and contact you.
+                </p>
+
+                <label for="full_name" style="display:block;font-size:13px;color:#cbd5e1;margin-bottom:6px;">Full Name *</label>
+                <input id="full_name" name="full_name" type="text" required autocomplete="name" placeholder="Enter your full name">
+
+                <label for="contact_number_1" style="display:block;font-size:13px;color:#cbd5e1;margin:16px 0 6px;">Contact Number 1 *</label>
+                <input id="contact_number_1" name="contact_number_1" type="tel" required autocomplete="tel" placeholder="Primary contact number">
+
+                <label for="contact_number_2" style="display:block;font-size:13px;color:#cbd5e1;margin:16px 0 6px;">Contact Number 2 *</label>
+                <input id="contact_number_2" name="contact_number_2" type="tel" required placeholder="Secondary contact number">
+            </div>
+
             <!-- Question 1 -->
             <div class="question-group">
                 <label class="question-title">1. The Business Shift: In your own words, what is your understanding of the new Velocity Forze digital signage ecosystem, and why is this model better than our old service agency model?</label>
-                <textarea rows="4" required></textarea>
+                <textarea name="q1_business_shift" rows="4" required></textarea>
             </div>
 
             <!-- Question 2: The Core Decision (Triggers Logic) -->
@@ -562,7 +580,7 @@
 
                 <div class="question-group">
                     <label class="question-title">4. Proving Your Equity Value: Based on your answer above, detail exactly what you are investing. If you chose skills, what are they and why can't the company survive without them? If you chose capital, how much?</label>
-                    <textarea rows="4"></textarea>
+                    <textarea name="q_final_alignment" rows="4"></textarea>
                 </div>
 
                 <div class="question-group">
@@ -578,32 +596,32 @@
             <div id="salarySection" class="dynamic-section">
                 <div class="question-group">
                     <label class="question-title">6. The Salary Reality: You are choosing to be an employee waiting for the product launch. What specific daily tasks or skills will you execute right now, unpaid, to guarantee we successfully reach that launch day so we can all get paid?</label>
-                    <textarea rows="4"></textarea>
+                    <textarea name="q_final_alignment" rows="4"></textarea>
                 </div>
 
                 <div class="question-group">
                     <label class="question-title">7. Future Salary Expectations: Once the product launches and the company has revenue, what specific job title and realistic monthly salary are you expecting in return for your early contributions?</label>
-                    <input type="text">
+                    <input type="text" name="q7_salary_expectations">
                 </div>
             </div>
 
             <!-- FINAL COMMON QUESTIONS (Always visible at the bottom) -->
             <div class="question-group">
                 <label class="question-title">8. Core Competency & Hard Skills: Strip away the ideas and talk about execution. List the top 3 specific, hard skills you bring to Velocity Forze right now (e.g., specific coding languages, hardware logistics, client sales).</label>
-                <input type="text" required>
+                <input type="text" name="q8_hard_skills" required>
             </div>
 
             <div class="question-group">
                 <label class="question-title">9. Daily Time Allocation: Building this ecosystem requires serious, daily dedication. Exactly how many hours per day will you commit to Velocity Forze tasks without fail?</label>
-                <input type="text" required>
+                <input type="text" name="q9_daily_hours" required>
             </div>
 
             <div class="question-group">
                 <label class="question-title">10. Final Alignment: Is there any other clarification you want to provide regarding your role, your skills, or what you are bringing to the table before management makes a final decision?</label>
-                <textarea rows="4"></textarea>
+                <textarea name="q10_final_alignment" rows="4"></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">🚀 Submit My Evaluation</button>
+            <input type="hidden" name="submitted_at" id="submitted_at"><button type="submit" class="submit-btn">🚀 Submit My Evaluation</button>
         </form>
     </div>
 
@@ -639,6 +657,8 @@
                 equityInputs.forEach(input => input.removeAttribute('required'));
             }
         }
+        document.getElementById('submitted_at').value = new Date().toISOString();
+
         // Live completion indicator
         const form = document.getElementById('evaluationForm');
         const progressBar = document.getElementById('progressBar');
