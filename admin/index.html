@@ -1,115 +1,792 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Velocity Forze – Admin Portal</title>
-<style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,Arial,sans-serif;color:#f8fafc;background:linear-gradient(135deg,#0f172a,#1e1b4b)}
-header{position:sticky;top:0;z-index:5;padding:18px 28px;border-bottom:1px solid #ffffff18;background:#0f172add;backdrop-filter:blur(14px);display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#6366f1,#a855f7);box-shadow:0 10px 28px #6366f155}.brand small{display:block;color:#a5b4fc;margin-top:2px}
-main{max-width:1150px;margin:28px auto;padding:0 20px}.card{background:#ffffff09;border:1px solid #ffffff12;border-radius:18px;padding:24px;box-shadow:0 20px 50px #0004;margin-bottom:22px}
-h1,h2{margin-top:0}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 16px;color:#fff;font-weight:700;cursor:pointer;background:#4f46e5}.btn.secondary{background:#ffffff12;border:1px solid #ffffff15}.btn.danger{background:#991b1b}
-.status{color:#a1a1aa;font-size:13px}.submission{border:1px solid #ffffff10;border-radius:14px;padding:18px;margin:12px 0;background:#02061755}.submission-head{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.name{font-weight:800;color:#c7d2fe}.date{color:#94a3b8;font-size:12px}.answers{margin-top:14px;display:grid;gap:9px}.answer{padding:10px 12px;border-radius:9px;background:#ffffff06}.answer b{display:block;color:#a5b4fc;font-size:12px;margin-bottom:4px}.answer span{white-space:pre-wrap;word-break:break-word;color:#e2e8f0}
-#login{max-width:450px;margin:90px auto}.field{margin:12px 0}.field label{display:block;color:#cbd5e1;font-size:13px;margin-bottom:6px}.field input,.editor input,.editor textarea{width:100%;padding:12px;border:1px solid #ffffff18;border-radius:10px;background:#02061788;color:white;outline:none;font:inherit}.field input:focus,.editor input:focus,.editor textarea:focus{border-color:#818cf8}
-.hidden{display:none!important}.tabs{display:flex;gap:8px;margin-bottom:18px}.tab.active{background:#6366f1}.editor-row{border:1px solid #ffffff10;padding:14px;border-radius:12px;margin:10px 0}.editor-row textarea{min-height:70px}.muted{color:#94a3b8;font-size:13px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity Forze - Admin Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #07111f;
+            --panel: rgba(255, 255, 255, .065);
+            --panel-strong: rgba(255, 255, 255, .1);
+            --border: rgba(255, 255, 255, .13);
+            --border-strong: rgba(125, 211, 252, .42);
+            --text: #f8fafc;
+            --muted: #a8b3c7;
+            --soft: #dbeafe;
+            --accent: #38bdf8;
+            --accent-2: #22c55e;
+            --accent-3: #818cf8;
+            --danger: #fb7185;
+            --warning: #facc15;
+            --shadow: rgba(0, 0, 0, .34);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(130deg, rgba(56, 189, 248, .1), transparent 34%),
+                linear-gradient(300deg, rgba(34, 197, 94, .08), transparent 32%),
+                linear-gradient(180deg, #07111f 0%, #101827 58%, #08111e 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .72), transparent 76%);
+        }
+
+        .shell {
+            width: min(100%, 1160px);
+            margin: 0 auto;
+            padding: 22px 18px 42px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            min-height: 78px;
+            padding: 12px 0;
+            backdrop-filter: blur(16px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 auto;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: 800;
+            letter-spacing: .02em;
+            background:
+                linear-gradient(135deg, rgba(56, 189, 248, .95), rgba(129, 140, 248, .95) 48%, rgba(34, 197, 94, .95));
+            box-shadow: 0 18px 38px rgba(56, 189, 248, .22);
+        }
+
+        .brand-title {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .brand-subtitle {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            border: 0;
+            border-radius: 8px;
+            padding: 0 14px;
+            color: #031525;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            font: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn.secondary {
+            color: var(--soft);
+            background: rgba(255, 255, 255, .065);
+            border: 1px solid var(--border);
+        }
+
+        .btn:disabled {
+            cursor: wait;
+            filter: grayscale(.3) brightness(.82);
+        }
+
+        .login-card,
+        .panel,
+        .member-list,
+        .detail-panel {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--panel);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 28px 70px var(--shadow);
+        }
+
+        .login-card {
+            width: min(100%, 460px);
+            margin: 64px auto 0;
+            padding: 28px;
+        }
+
+        .login-card h1,
+        .dashboard-title h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+            letter-spacing: 0;
+        }
+
+        .muted {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .field {
+            margin-top: 16px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field input,
+        .search-input {
+            width: 100%;
+            min-height: 48px;
+            padding: 0 14px;
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 8px;
+            outline: none;
+            color: white;
+            background: rgba(2, 6, 23, .48);
+            font: inherit;
+            font-size: 15px;
+        }
+
+        .field input:focus,
+        .search-input:focus {
+            border-color: rgba(56, 189, 248, .68);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, .13);
+        }
+
+        .login-message,
+        .load-message {
+            min-height: 20px;
+            margin-top: 12px;
+            color: var(--danger);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .dashboard-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 18px;
+            margin: 24px 0 18px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .panel {
+            min-height: 94px;
+            padding: 18px;
+        }
+
+        .panel strong {
+            display: block;
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .panel span {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(280px, 390px) minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .member-list {
+            padding: 14px;
+        }
+
+        .list-head {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .list-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .list-title-row h2,
+        .detail-panel h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .members {
+            display: grid;
+            gap: 10px;
+            max-height: 620px;
+            overflow: auto;
+            padding-right: 4px;
+        }
+
+        .member-card {
+            width: 100%;
+            min-height: 88px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 8px;
+            padding: 13px;
+            color: inherit;
+            text-align: left;
+            background: rgba(2, 6, 23, .32);
+            cursor: pointer;
+            transition: border-color .2s ease, background .2s ease, transform .2s ease;
+        }
+
+        .member-card:hover,
+        .member-card.active {
+            border-color: var(--border-strong);
+            background: rgba(56, 189, 248, .08);
+            transform: translateY(-1px);
+        }
+
+        .member-card strong {
+            display: block;
+            color: #e0f2fe;
+            font-size: 15px;
+            line-height: 1.35;
+        }
+
+        .member-card span {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .detail-panel {
+            min-height: 420px;
+            padding: 20px;
+        }
+
+        .empty-state {
+            display: grid;
+            place-items: center;
+            min-height: 300px;
+            color: var(--muted);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .profile {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .profile-item,
+        .answer {
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 8px;
+            background: rgba(2, 6, 23, .28);
+        }
+
+        .profile-item {
+            min-height: 74px;
+            padding: 12px;
+        }
+
+        .profile-item b,
+        .answer b {
+            display: block;
+            margin-bottom: 6px;
+            color: #bae6fd;
+            font-size: 12px;
+        }
+
+        .profile-item span,
+        .answer span {
+            color: #e2e8f0;
+            font-size: 13px;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .answers {
+            display: grid;
+            gap: 10px;
+        }
+
+        .answer {
+            padding: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-head {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .dashboard-grid,
+            .stats,
+            .profile {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .shell {
+                padding: 14px 12px 28px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .top-actions,
+            .top-actions .btn {
+                width: 100%;
+            }
+
+            .members {
+                max-height: 420px;
+            }
+        }
+    </style>
 </head>
 <body>
-<header>
-<div class="brand"><div class="logo">VF</div><div><strong>VELOCITY FORZE</strong><small>Admin Portal</small></div></div>
-<button class="btn secondary" onclick="logout()">Log out</button>
-</header>
+    <div class="shell">
+        <header class="topbar">
+            <a class="brand" href="../" aria-label="Velocity Forze evaluation home">
+                <span class="brand-mark">VF</span>
+                <span>
+                    <span class="brand-title">Velocity Forze</span>
+                    <span class="brand-subtitle">Admin Portal</span>
+                </span>
+            </a>
+            <div class="top-actions">
+                <a class="btn secondary" href="../">Evaluation</a>
+                <button id="logoutBtn" class="btn secondary hidden" type="button">Log out</button>
+            </div>
+        </header>
 
-<section id="login" class="card">
-<h1>🔐 Admin Access</h1>
-<p class="muted">Manage evaluation submissions and question settings.</p>
-<div class="field"><label>Username</label><input id="user" autocomplete="username"></div>
-<div class="field"><label>Password</label><input id="pass" type="password" autocomplete="current-password"></div>
-<button class="btn" style="width:100%" type="button" onclick="adminLogin()">🚀 Access Admin</button>
-<p id="loginMsg" class="status"></p>
-</section>
+        <section id="loginScreen" class="login-card">
+            <h1>Admin Access</h1>
+            <p class="muted">Velocity Forze management portal.</p>
+            <div class="field">
+                <label for="adminUser">Username</label>
+                <input id="adminUser" type="text" autocomplete="username" placeholder="Admin username">
+            </div>
+            <div class="field">
+                <label for="adminPass">Password</label>
+                <input id="adminPass" type="password" autocomplete="current-password" placeholder="Admin password">
+            </div>
+            <div class="field">
+                <button id="loginBtn" class="btn" style="width:100%" type="button">Access Admin</button>
+            </div>
+            <div id="loginMessage" class="login-message" role="status" aria-live="polite"></div>
+        </section>
 
-<main id="app" class="hidden">
-<div class="tabs">
-<button class="btn tab active" onclick="showTab('submissions',this)">📋 Submissions</button>
-<button class="btn tab" onclick="showTab('editor',this)">✏️ Edit Questions</button>
-</div>
+        <main id="dashboard" class="hidden">
+            <section class="dashboard-head">
+                <div class="dashboard-title">
+                    <h1>Evaluation Responses</h1>
+                    <p class="muted" id="sourceText">Loading response database...</p>
+                </div>
+                <div class="top-actions">
+                    <button id="refreshBtn" class="btn secondary" type="button">Refresh</button>
+                    <a id="downloadCsv" class="btn" href="../answers/Answers_By_Members.csv" download>Download CSV</a>
+                </div>
+            </section>
 
-<section id="submissions" class="card">
-<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
-<div>
-<h2>📥 Submitted Evaluations</h2>
-<div class="status">Your submitted forms are stored in your temporary Webhook.site inbox.</div>
-</div>
-<a class="btn" href="https://webhook.site/9b1dcf94-782f-4889-9223-7f6cce11afed" target="_blank" rel="noopener">🔗 Open Submissions</a>
-</div>
+            <section class="stats" aria-label="Evaluation statistics">
+                <div class="panel">
+                    <strong id="totalMembers">0</strong>
+                    <span>Total Members</span>
+                </div>
+                <div class="panel">
+                    <strong id="equityMembers">0</strong>
+                    <span>Equity Path</span>
+                </div>
+                <div class="panel">
+                    <strong id="salaryMembers">0</strong>
+                    <span>Salary Path</span>
+                </div>
+            </section>
 
-<div style="margin-top:18px;padding:18px;border-radius:14px;background:#ffffff06;border:1px solid #ffffff10">
-<strong>✅ Submission system is working</strong>
-<p class="muted" style="margin-bottom:0">
-Click <b>Open Submissions</b> to view the names, two contact numbers, and all answers received from your members.
-You do not need an API key or paid subscription for this temporary setup.
-</p>
-</div>
-</section>
+            <section class="dashboard-grid">
+                <aside class="member-list">
+                    <div class="list-head">
+                        <div class="list-title-row">
+                            <h2>Members</h2>
+                            <span class="muted" id="filteredCount">0 shown</span>
+                        </div>
+                        <input id="searchInput" class="search-input" type="search" placeholder="Search by name, phone, or path">
+                    </div>
+                    <div id="memberCards" class="members"></div>
+                    <div id="loadMessage" class="load-message" role="status" aria-live="polite"></div>
+                </aside>
 
-<section id="editor" class="card hidden editor">
-<h2>✏️ Question Editor</h2>
-<p class="muted">Edits are saved in this admin browser. They do not automatically rewrite GitHub Pages for every visitor; that requires a server-side database or authenticated GitHub integration.</p>
-<div id="questionEditor"></div>
-<button class="btn" onclick="saveQuestions()">💾 Save Questions</button>
-<button class="btn secondary" onclick="resetQuestions()">↩ Reset to Original</button>
-</section>
-</main>
+                <section id="detailPanel" class="detail-panel">
+                    <div class="empty-state">Select a member to view the full evaluation response.</div>
+                </section>
+            </section>
+        </main>
+    </div>
 
-<script>
-const ADMIN_USER='admin000', ADMIN_PASS='admin@1625';
+    <script>
+        const ADMIN_USER = "admin000";
+        const ADMIN_PASSWORD_SHA256 = "88bb1590864f0b64ce539d7191166a39b01b379c094065e86b87d8226d7512b7";
+        const CSV_PATH = "../answers/Answers_By_Members.csv";
 
-const defaultQuestions=[
-['q1_business_shift','1. The Business Shift'],
-['q4_equity_value','4. Proving Your Equity Value'],
-['q6_salary_tasks','6. The Salary Reality'],
-['q7_salary_expectations','7. Future Salary Expectations'],
-['q8_hard_skills','8. Core Competency & Hard Skills'],
-['q9_daily_hours','9. Daily Time Allocation'],
-['q10_final_alignment','10. Final Alignment']
-];
+        const QUESTION_LABELS = {
+            submitted_at: "Submitted At",
+            full_name: "Full Name",
+            contact_number_1: "Contact Number 1",
+            contact_number_2: "Contact Number 2",
+            compensation: "Compensation Path",
+            q1_business_shift: "1. The Business Shift",
+            investment_type: "3. The Equity Investment",
+            q4_equity_value: "4. Proving Your Equity Value",
+            revocation_clause: "5. Equity Revocation Clause",
+            q6_salary_tasks: "6. The Salary Reality",
+            q7_salary_expectations: "7. Future Salary Expectations",
+            q8_hard_skills: "8. Core Competency & Hard Skills",
+            q9_daily_hours: "9. Daily Time Allocation",
+            q10_final_alignment: "10. Final Alignment"
+        };
 
-function adminLogin(){
- const username = document.getElementById('user').value.trim();
- const password = document.getElementById('pass').value;
- const loginScreen = document.getElementById('login');
- const appScreen = document.getElementById('app');
- const message = document.getElementById('loginMsg');
+        const ANSWER_FIELDS = [
+            "q1_business_shift",
+            "investment_type",
+            "q4_equity_value",
+            "revocation_clause",
+            "q6_salary_tasks",
+            "q7_salary_expectations",
+            "q8_hard_skills",
+            "q9_daily_hours",
+            "q10_final_alignment"
+        ];
 
- if(username === ADMIN_USER && password === ADMIN_PASS){
-   message.textContent = '';
-   loginScreen.classList.add('hidden');
-   appScreen.classList.remove('hidden');
-   renderQuestions();
- } else {
-   message.textContent = '❌ Incorrect username or password.';
- }
-}
-function logout(){location.reload()}
-function showTab(id,el){
- document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));
- document.getElementById(id).classList.remove('hidden');
- document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');
-}
-function loadSubmissions(){ /* Submissions are viewed directly in the free Webhook.site inbox. */ }
-function label(k){return k.replace(/^q\d+_/,'').replaceAll('_',' ').replace(/\b\w/g,m=>m.toUpperCase())}
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function renderQuestions(){
- const saved=JSON.parse(localStorage.getItem('vf_questions')||'null')||defaultQuestions;
- questionEditor.innerHTML=saved.map(([id,text],i)=>`<div class="editor-row"><label>Question ${i+1}</label><input data-qid="${id}" value="${esc(text)}"><p class="muted">Field ID: ${esc(id)}</p></div>`).join('');
-}
-function saveQuestions(){
- const data=[...document.querySelectorAll('[data-qid]')].map(x=>[x.dataset.qid,x.value]);
- localStorage.setItem('vf_questions',JSON.stringify(data));alert('Questions saved in this admin browser.');
-}
-function resetQuestions(){localStorage.removeItem('vf_questions');renderQuestions()}
-</script>
+        const loginScreen = document.getElementById("loginScreen");
+        const dashboard = document.getElementById("dashboard");
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loginMessage = document.getElementById("loginMessage");
+        const adminUser = document.getElementById("adminUser");
+        const adminPass = document.getElementById("adminPass");
+        const refreshBtn = document.getElementById("refreshBtn");
+        const sourceText = document.getElementById("sourceText");
+        const totalMembers = document.getElementById("totalMembers");
+        const equityMembers = document.getElementById("equityMembers");
+        const salaryMembers = document.getElementById("salaryMembers");
+        const filteredCount = document.getElementById("filteredCount");
+        const searchInput = document.getElementById("searchInput");
+        const memberCards = document.getElementById("memberCards");
+        const loadMessage = document.getElementById("loadMessage");
+        const detailPanel = document.getElementById("detailPanel");
+
+        let submissions = [];
+        let selectedIndex = -1;
+
+        async function sha256(value) {
+            const bytes = new TextEncoder().encode(value);
+            const hash = await crypto.subtle.digest("SHA-256", bytes);
+            return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+        }
+
+        function escapeHtml(value) {
+            return String(value || "").replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+        }
+
+        function formatValue(value) {
+            const clean = String(value || "").trim();
+            return clean || "-";
+        }
+
+        function formatDate(value) {
+            if (!value) return "-";
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return value;
+            return date.toLocaleString();
+        }
+
+        function parseCsv(text) {
+            const rows = [];
+            let row = [];
+            let value = "";
+            let inQuotes = false;
+
+            for (let index = 0; index < text.length; index += 1) {
+                const char = text[index];
+                const next = text[index + 1];
+
+                if (inQuotes) {
+                    if (char === '"' && next === '"') {
+                        value += '"';
+                        index += 1;
+                    } else if (char === '"') {
+                        inQuotes = false;
+                    } else {
+                        value += char;
+                    }
+                } else if (char === '"') {
+                    inQuotes = true;
+                } else if (char === ",") {
+                    row.push(value);
+                    value = "";
+                } else if (char === "\n") {
+                    row.push(value);
+                    rows.push(row);
+                    row = [];
+                    value = "";
+                } else if (char !== "\r") {
+                    value += char;
+                }
+            }
+
+            if (value || row.length) {
+                row.push(value);
+                rows.push(row);
+            }
+
+            const headers = rows.shift() || [];
+            return rows
+                .filter((items) => items.some((item) => item.trim()))
+                .map((items) => Object.fromEntries(headers.map((header, index) => [header, items[index] || ""])));
+        }
+
+        async function loadSubmissions() {
+            refreshBtn.disabled = true;
+            loadMessage.textContent = "";
+            sourceText.textContent = "Loading response database...";
+
+            try {
+                const response = await fetch(`${CSV_PATH}?v=${Date.now()}`, { cache: "no-store" });
+                if (!response.ok) throw new Error(`CSV returned ${response.status}`);
+
+                const csv = await response.text();
+                submissions = parseCsv(csv);
+                selectedIndex = submissions.length ? 0 : -1;
+                sourceText.textContent = `Source: answers/Answers_By_Members.csv`;
+                renderDashboard();
+            } catch (error) {
+                submissions = [];
+                selectedIndex = -1;
+                renderDashboard();
+                sourceText.textContent = "Response database could not be loaded.";
+                loadMessage.textContent = "Could not load answers/Answers_By_Members.csv. Check that the file exists on GitHub Pages.";
+            } finally {
+                refreshBtn.disabled = false;
+            }
+        }
+
+        function filteredSubmissions() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) return submissions.map((submission, index) => ({ submission, index }));
+
+            return submissions
+                .map((submission, index) => ({ submission, index }))
+                .filter(({ submission }) => {
+                    const haystack = [
+                        submission.full_name,
+                        submission.contact_number_1,
+                        submission.contact_number_2,
+                        submission.compensation
+                    ].join(" ").toLowerCase();
+                    return haystack.includes(query);
+                });
+        }
+
+        function renderDashboard() {
+            const filtered = filteredSubmissions();
+            totalMembers.textContent = submissions.length;
+            equityMembers.textContent = submissions.filter((item) => item.compensation === "equity").length;
+            salaryMembers.textContent = submissions.filter((item) => item.compensation === "salary").length;
+            filteredCount.textContent = `${filtered.length} shown`;
+
+            if (!filtered.length) {
+                memberCards.innerHTML = `<div class="empty-state">No responses found.</div>`;
+            } else {
+                memberCards.innerHTML = filtered.map(({ submission, index }, listIndex) => {
+                    const active = index === selectedIndex ? " active" : "";
+                    const number = listIndex + 1;
+                    return `
+                        <button class="member-card${active}" type="button" data-index="${index}">
+                            <strong>#${number} ${escapeHtml(formatValue(submission.full_name))}</strong>
+                            <span>${escapeHtml(formatValue(submission.contact_number_1))}</span>
+                            <span>${escapeHtml(formatValue(submission.compensation))} path</span>
+                        </button>
+                    `;
+                }).join("");
+            }
+
+            renderDetail();
+        }
+
+        function renderDetail() {
+            if (selectedIndex < 0 || !submissions[selectedIndex]) {
+                detailPanel.innerHTML = `<div class="empty-state">Select a member to view the full evaluation response.</div>`;
+                return;
+            }
+
+            const submission = submissions[selectedIndex];
+            const profile = [
+                ["Full Name", submission.full_name],
+                ["Contact Number 1", submission.contact_number_1],
+                ["Contact Number 2", submission.contact_number_2],
+                ["Compensation Path", submission.compensation],
+                ["Submitted At", formatDate(submission.submitted_at)]
+            ];
+
+            detailPanel.innerHTML = `
+                <h2>${escapeHtml(formatValue(submission.full_name))}</h2>
+                <p class="muted">Complete member evaluation response.</p>
+                <div class="profile">
+                    ${profile.map(([label, value]) => `
+                        <div class="profile-item">
+                            <b>${escapeHtml(label)}</b>
+                            <span>${escapeHtml(formatValue(value))}</span>
+                        </div>
+                    `).join("")}
+                </div>
+                <div class="answers">
+                    ${ANSWER_FIELDS.map((field) => `
+                        <div class="answer">
+                            <b>${escapeHtml(QUESTION_LABELS[field])}</b>
+                            <span>${escapeHtml(formatValue(submission[field]))}</span>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+        async function adminLogin() {
+            loginBtn.disabled = true;
+            loginMessage.textContent = "";
+
+            try {
+                const passwordHash = await sha256(adminPass.value);
+                if (adminUser.value.trim() === ADMIN_USER && passwordHash === ADMIN_PASSWORD_SHA256) {
+                    sessionStorage.setItem("vf_admin_unlocked", "true");
+                    loginScreen.classList.add("hidden");
+                    dashboard.classList.remove("hidden");
+                    logoutBtn.classList.remove("hidden");
+                    await loadSubmissions();
+                } else {
+                    loginMessage.textContent = "Incorrect admin username or password.";
+                }
+            } finally {
+                loginBtn.disabled = false;
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem("vf_admin_unlocked");
+            adminPass.value = "";
+            dashboard.classList.add("hidden");
+            logoutBtn.classList.add("hidden");
+            loginScreen.classList.remove("hidden");
+        }
+
+        memberCards.addEventListener("click", (event) => {
+            const card = event.target.closest("[data-index]");
+            if (!card) return;
+            selectedIndex = Number(card.dataset.index);
+            renderDashboard();
+        });
+
+        searchInput.addEventListener("input", renderDashboard);
+        refreshBtn.addEventListener("click", loadSubmissions);
+        loginBtn.addEventListener("click", adminLogin);
+        logoutBtn.addEventListener("click", logout);
+        adminPass.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") adminLogin();
+        });
+
+        if (sessionStorage.getItem("vf_admin_unlocked") === "true") {
+            loginScreen.classList.add("hidden");
+            dashboard.classList.remove("hidden");
+            logoutBtn.classList.remove("hidden");
+            loadSubmissions();
+        }
+    </script>
 </body>
 </html>
